@@ -3,17 +3,17 @@ package redis
 import (
 	"fmt"
 	"github.com/go-redis/redis"
-	"github.com/spf13/viper"
+	"go-web-example/settings"
 )
 
 var rdb *redis.Client
 
-func InitDB() (err error) {
+func InitDB(config *settings.RedisConfig) (err error) {
 	rdb = redis.NewClient(&redis.Options{
-		Addr:     fmt.Sprintf("%s:%s", viper.GetString("redis.host"), viper.GetString("redis.port")),
-		Password: viper.GetString("redis.password"), // 密码
-		DB:       viper.GetInt("redis.db"),          // 数据库
-		PoolSize: viper.GetInt("redis.poolSize"),    // 连接池大小
+		Addr:     fmt.Sprintf("%s:%s", config.Host, config.Port),
+		Password: config.Password, // 密码
+		DB:       config.DB,       // 数据库
+		PoolSize: config.PoolSize, // 连接池大小
 	})
 	if _, err := rdb.Ping().Result(); err != nil {
 		return err

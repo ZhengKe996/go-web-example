@@ -27,19 +27,19 @@ func main() {
 		fmt.Printf("Init settings failed,err:%v\n", err)
 	}
 	// 2. 初始化日志
-	if err := logger.Init(); err != nil {
+	if err := logger.Init(settings.Conf.LogConfig); err != nil {
 		fmt.Printf("Init logger failed,err:%v\n", err)
 	}
 	defer zap.L().Sync() // 延迟注册
 	zap.L().Debug("Init logger success~")
 
 	// 3. 初始化数据库连接
-	if err := mysql.InitDB(); err != nil {
+	if err := mysql.InitDB(settings.Conf.MYSQLConfig); err != nil {
 		zap.L().Error("Init mysql connect failed", zap.Error(err))
 	}
 	defer mysql.Close()
 
-	if err := redis.InitDB(); err != nil {
+	if err := redis.InitDB(settings.Conf.RedisConfig); err != nil {
 		zap.L().Error("Init redis connect failed", zap.Error(err))
 	}
 	defer redis.Close()

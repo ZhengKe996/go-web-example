@@ -4,20 +4,20 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
-	"github.com/spf13/viper"
+	"go-web-example/settings"
 )
 
 var db *sqlx.DB
 
-func InitDB() (err error) {
+func InitDB(config *settings.MYSQLConfig) (err error) {
 	// DSN:Data Source Name
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True", viper.GetString("mysql.user"), viper.GetString("mysql.password"), viper.GetString("mysql.host"), viper.GetString("mysql.port"), viper.GetString("mysql.dbName"))
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True", config.User, config.Password, config.Host, config.Port, config.DbName)
 	db, err = sqlx.Connect("mysql", dsn)
 	if err != nil {
 		return err
 	}
-	db.SetMaxOpenConns(viper.GetInt("mysql.MaxOpenConns"))
-	db.SetMaxIdleConns(viper.GetInt("mysql.MaxIdleConns"))
+	db.SetMaxOpenConns(config.MaxOpenConns)
+	db.SetMaxIdleConns(config.MaxIdleConns)
 	return
 }
 

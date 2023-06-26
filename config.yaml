@@ -1,6 +1,7 @@
 app:
   name: "WebAppExample"
   mode: "Dev"
+  version: "^1.0.0"
   port: 8080
 
 log:
@@ -16,8 +17,8 @@ mysql:
   dbName: "go-mysql-demo"
   user: "root"
   password: "123456"
-  MaxOpenConns: 20
-  MaxIdleConns: 20
+  maxOpenConns: 20
+  maxIdleConns: 20
 
 redis:
   host: 127.0.0.1
