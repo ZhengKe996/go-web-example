@@ -2,12 +2,13 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"github.com/spf13/viper"
 	"go-web-example/dao/mysql"
 	"go-web-example/dao/redis"
 	"go-web-example/logger"
-	routes "go-web-example/routes"
+	"go-web-example/routes"
 	"go-web-example/settings"
 	"go.uber.org/zap"
 	"net/http"
@@ -22,8 +23,12 @@ import (
 */
 
 func main() {
+	var filePath string
+	flag.StringVar(&filePath, "config", "./config.yaml", "配置文件")
+	flag.Parse()
+
 	// 1. 加载配置文件（本地）
-	if err := settings.Init(); err != nil {
+	if err := settings.Init(filePath); err != nil {
 		fmt.Printf("Init settings failed,err:%v\n", err)
 	}
 	// 2. 初始化日志
